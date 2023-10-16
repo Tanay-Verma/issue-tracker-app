@@ -1,7 +1,7 @@
-import Image from 'next/image'
+import { Button } from '@radix-ui/themes'
 
 export default function Home() {
   return (
-   <div>Yo Fuckers</div>
+   <div><Button>Yo Fuckers</Button></div>
   )
 }

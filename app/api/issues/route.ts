@@ -3,14 +3,17 @@ import z from "zod";
 import prisma from "@/prisma/client";
 
 const BodySchema = z.object({
-    title: z.string().min(1).max(255),
-    description: z.string().min(1),
-})
+  title: z.string().min(1).max(255),
+  description: z.string().min(1),
+});
 
-export const POST =async (request:NextRequest) => {
-    const body = await request.json()
-    const validation = BodySchema.safeParse(body);
-    if(!validation.success) return NextResponse.json(validation.error.errors,{status:400})
-    const newIssue = await prisma.issue.create({data:{title:body.title, description: body.description}})
-    return NextResponse.json(newIssue, {status:201})
-}
+export const POST = async (request: NextRequest) => {
+  const body = await request.json();
+  const validation = BodySchema.safeParse(body);
+  if (!validation.success)
+    return NextResponse.json(validation.error.errors, { status: 400 });
+  const newIssue = await prisma.issue.create({
+    data: { title: body.title, description: body.description },
+  });
+  return NextResponse.json(newIssue, { status: 201 });
+};
