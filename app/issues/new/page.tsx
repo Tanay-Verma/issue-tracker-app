@@ -1,22 +1,52 @@
 "use client";
 import { Button, TextArea, TextField } from "@radix-ui/themes";
-import React from "react";
+import SimpleMDE from "react-simplemde-editor";
+import "easymde/dist/easymde.min.css";
+import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { useRouter } from "next/navigation";
 
+interface IssueForm {
+  title: string;
+  description: string;
+}
 const NewIssuePage = () => {
+  const { register, control, handleSubmit } = useForm<IssueForm>();
+
+  const router = useRouter();
+
+  const onSubmit: SubmitHandler<IssueForm> = async (data) => {
+    await fetch("/api/issues", { method: "POST", body: JSON.stringify(data) });
+    router.push("/issues");
+  };
+
   return (
-    <div className="max-w-xl space-y-4">
+    <form className="max-w-xl space-y-4" onSubmit={handleSubmit(onSubmit)}>
       <div>
-          <label htmlFor="title">Title</label>
-          <TextField.Root>
-            <TextField.Input id="title" placeholder="Title for you issue…" />
-          </TextField.Root>
+        <label htmlFor="title">Title</label>
+        <TextField.Root>
+          <TextField.Input
+            id="title"
+            placeholder="Title for you issue…"
+            {...register("title")}
+          />
+        </TextField.Root>
       </div>
       <div>
-          <label htmlFor="description">Description</label>
-          <TextArea id="description" placeholder="Description for your issue…" />
+        <label>Description</label>
+        <Controller
+          name="description"
+          control={control}
+          render={({ field: { onChange, onBlur } }) => (
+            <SimpleMDE
+              placeholder="Description for your issue..."
+              onChange={onChange}
+              onBlur={onBlur}
+            />
+          )}
+        />
       </div>
-    <Button>Submit New Issue</Button>
-    </div>
+      <Button>Submit New Issue</Button>
+    </form>
   );
 };
 
