@@ -1,5 +1,5 @@
 "use client";
-import { Button, Callout, TextArea, TextField } from "@radix-ui/themes";
+import { Button, Callout, Text, TextArea, TextField } from "@radix-ui/themes";
 import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
@@ -7,20 +7,27 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { AiFillWarning } from "react-icons/ai";
 import axios from "redaxios";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { IssuesSchema } from "../../IssuesSchema";
+import { z } from "zod";
+import ErrorMessage from "@/components/ErrorMessage";
 
-interface IssueForm {
-  title: string;
-  description: string;
-}
+type IssueForm = z.infer<typeof IssuesSchema>;
+
 const NewIssuePage = () => {
-  const { register, control, handleSubmit } = useForm<IssueForm>();
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IssueForm>({ resolver: zodResolver(IssuesSchema) });
   const router = useRouter();
   const [error, setError] = useState("");
 
   const onSubmit: SubmitHandler<IssueForm> = async (data) => {
     try {
       await axios.post("/api/issues", data);
-      router.push("/issues");
+      router.replace("/issues");
     } catch (error) {
       setError("An unexpected error occured.");
     }
@@ -46,6 +53,7 @@ const NewIssuePage = () => {
               {...register("title")}
             />
           </TextField.Root>
+          <ErrorMessage>{errors.title?.message}</ErrorMessage>
         </div>
         <div>
           <label>Description</label>
@@ -60,6 +68,7 @@ const NewIssuePage = () => {
               />
             )}
           />
+          <ErrorMessage>{errors.description?.message}</ErrorMessage>
         </div>
         <Button>Submit New Issue</Button>
       </form>
