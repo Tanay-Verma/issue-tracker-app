@@ -2,6 +2,7 @@ import { Button, Table } from "@radix-ui/themes";
 import Link from "next/link";
 import React from "react";
 import prisma from "@/prisma/client";
+import IssueStatusBadge from "@/components/IssueStatusBadge";
 
 const IssuesPage = async () => {
   const issues = await prisma.issue.findMany();
@@ -16,8 +17,12 @@ const IssuesPage = async () => {
         <Table.Header>
           <Table.Row>
             <Table.ColumnHeaderCell>Issue</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell className="hidden md:table-cell">Status</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell className="hidden md:table-cell">Created At</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell className="hidden md:table-cell">
+              Status
+            </Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell className="hidden md:table-cell">
+              Created At
+            </Table.ColumnHeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -26,14 +31,18 @@ const IssuesPage = async () => {
               <Table.Cell>
                 {issue.title}
                 <div className="block md:hidden">
-                  {issue.status}
+                  <IssueStatusBadge status={issue.status} />
                 </div>
                 <div className="block md:hidden">
                   {issue.createdAt.toDateString()}
                 </div>
               </Table.Cell>
-              <Table.Cell className="hidden md:table-cell">{issue.status}</Table.Cell>
-              <Table.Cell className="hidden md:table-cell">{issue.createdAt.toDateString()}</Table.Cell>
+              <Table.Cell className="hidden md:table-cell">
+                <IssueStatusBadge status={issue.status} />
+              </Table.Cell>
+              <Table.Cell className="hidden md:table-cell">
+                {issue.createdAt.toDateString()}
+              </Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>
