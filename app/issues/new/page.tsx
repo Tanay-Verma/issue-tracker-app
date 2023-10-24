@@ -10,8 +10,8 @@ import axios from "redaxios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IssuesSchema } from "../../IssuesSchema";
 import { z } from "zod";
-import ErrorMessage from "@/components/ErrorMessage";
-import Spinner from "@/components/Spinner";
+import {ErrorMessage,Spinner} from "@/components"
+
 
 const SimpleMDE = dynamic(() => import("react-simplemde-editor")
 ,{ssr:false})
