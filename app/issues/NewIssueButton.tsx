@@ -5,7 +5,7 @@ import React from 'react'
 const NewIssueButton = () => {
   return (
     <div className="mb-5">
-        <Button className="">
+        <Button>
           <Link href="/issues/new">New Issue</Link>
         </Button>
       </div>
