@@ -7,7 +7,7 @@ const EditButton = ({issueId}:{issueId:string}) => {
   return (
     <Button>
       <BiEdit />
-      <Link href={`issues/${issueId}/edit`}>Edit Issue</Link>
+      <Link href={`/issues/edit/${issueId}`}>Edit Issue</Link>
     </Button>
   );
 };
