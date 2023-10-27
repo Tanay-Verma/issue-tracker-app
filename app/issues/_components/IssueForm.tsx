@@ -20,7 +20,6 @@ const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
 type IssueFormData = z.infer<typeof IssuesSchema>;
 
 const IssueForm = ({ issue }: { issue?: Issue }) => {
-    console.log(issue)
   const {
     register,
     control,
