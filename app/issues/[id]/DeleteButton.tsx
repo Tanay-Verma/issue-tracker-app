@@ -1,8 +1,16 @@
 "use client";
 import { AlertDialog, Button } from "@radix-ui/themes";
+import { useRouter } from "next/navigation";
 import { AiFillDelete } from "react-icons/ai";
+import axios from "redaxios";
 
 const DeleteButton = ({ issueId }: { issueId: string }) => {
+    const router = useRouter();
+  const handleDelete = async () => {
+    await axios.delete(`/api/issues/${issueId}`);
+    router.push("/issues");
+    router.refresh()
+  };
   return (
     <AlertDialog.Root>
       <AlertDialog.Trigger>
@@ -18,16 +26,16 @@ const DeleteButton = ({ issueId }: { issueId: string }) => {
           undone.
         </AlertDialog.Description>
         <div className="flex justify-end gap-4 mt-2">
-            <AlertDialog.Cancel>
-              <Button color="gray" variant="soft">
-                Cancel
-              </Button>
-            </AlertDialog.Cancel>
-            <AlertDialog.Action>
-              <Button color="red" variant="soft">
-                Delete
-              </Button>
-            </AlertDialog.Action>
+          <AlertDialog.Cancel>
+            <Button color="gray" variant="soft">
+              Cancel
+            </Button>
+          </AlertDialog.Cancel>
+          <AlertDialog.Action>
+            <Button color="red" variant="soft" onClick={handleDelete}>
+              Delete
+            </Button>
+          </AlertDialog.Action>
         </div>
       </AlertDialog.Content>
     </AlertDialog.Root>
