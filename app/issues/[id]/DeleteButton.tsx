@@ -1,6 +1,6 @@
 "use client";
 import { Spinner } from "@/components";
-import { AlertDialog, Button } from "@radix-ui/themes";
+import { AlertDialog, Button, Text } from "@radix-ui/themes";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
@@ -14,7 +14,7 @@ const DeleteButton = ({ issueId }: { issueId: string }) => {
     try {
       setDeleting(true);
       await axios.delete(`/api/issues/${issueId}`);
-      router.push("/issues");
+      router.push("/issues/list");
       router.refresh();
     } catch (error) {
       setDeleting(false);
@@ -27,7 +27,9 @@ const DeleteButton = ({ issueId }: { issueId: string }) => {
         <AlertDialog.Trigger>
           <Button color="red" disabled={isDeleting}>
             <AiFillDelete />
-            Delete Issue
+            <Text as="span" className="cursor-pointer">
+              Delete Issue
+            </Text>
             {isDeleting && <Spinner />}
           </Button>
         </AlertDialog.Trigger>
@@ -40,12 +42,16 @@ const DeleteButton = ({ issueId }: { issueId: string }) => {
           <div className="flex justify-end gap-4 mt-2">
             <AlertDialog.Cancel>
               <Button color="gray" variant="soft">
-                Cancel
+                <Text as="span" className="cursor-pointer">
+                  Cancel
+                </Text>
               </Button>
             </AlertDialog.Cancel>
             <AlertDialog.Action>
               <Button color="red" variant="soft" onClick={handleDelete}>
-                Delete
+                <Text as="span" className="cursor-pointer">
+                  Delete
+                </Text>
               </Button>
             </AlertDialog.Action>
           </div>
@@ -59,7 +65,9 @@ const DeleteButton = ({ issueId }: { issueId: string }) => {
           </AlertDialog.Description>
           <div className="flex justify-end mt-2">
             <Button variant="soft" color="gray" onClick={() => setError(false)}>
-              Okay
+              <Text as="span" className="cursor-pointer">
+                Okay
+              </Text>
             </Button>
           </div>
         </AlertDialog.Content>

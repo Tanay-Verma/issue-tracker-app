@@ -11,8 +11,7 @@ import { IssuesSchema } from "../../IssuesSchema";
 import { z } from "zod";
 import { ErrorMessage, Spinner } from "@/components";
 import { Issue } from "@prisma/client";
-import SimpleMDE from "react-simplemde-editor"
-
+import SimpleMDE from "react-simplemde-editor";
 
 type IssueFormData = z.infer<typeof IssuesSchema>;
 
@@ -32,8 +31,8 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
       setSubmitting(true);
       if (issue) await axios.patch(`/api/issues/${issue.id}`, data);
       else await axios.post("/api/issues", data);
-      router.replace("/issues");
-      router.refresh()
+      router.push("/issues/list");
+      router.refresh();
     } catch (error) {
       setSubmitting(false);
       setError("An unexpected error occured.");
@@ -81,8 +80,10 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
           <ErrorMessage>{errors.description?.message}</ErrorMessage>
         </div>
         <Button disabled={isSubmitting}>
-          {issue ? "Update Issue" : "Submit New Issue"}{" "}
-          {isSubmitting && <Spinner />}
+          <Text as="span" className="cursor-pointer">
+            {issue ? "Update Issue" : "Submit New Issue"}{" "}
+            {isSubmitting && <Spinner />}
+          </Text>
         </Button>
       </form>
     </div>
