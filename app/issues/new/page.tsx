@@ -1,10 +1,11 @@
-import React from 'react'
-import IssueForm from '../_components/IssueForm'
-
+import IssueFormSkeleton from "@/app/issues/_components/IssueFormSkeleton";
+import dynamic from "next/dynamic";
+const IssueForm = dynamic(() => import("../_components/IssueForm"), {
+  ssr: false,
+  loading: () => <IssueFormSkeleton />,
+});
 const NewIssuePage = () => {
-  return (
-    <IssueForm/>
-  )
-}
+  return <IssueForm />;
+};
 
-export default NewIssuePage
+export default NewIssuePage;
