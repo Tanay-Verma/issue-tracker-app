@@ -4,16 +4,18 @@ import React from "react";
 import { AiOutlineIssuesClose } from "react-icons/ai";
 import classNames from "classnames";
 import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
 const Navbar = () => {
   const links = [
     { name: "Dashboard", href: "/" },
     { name: "Issues", href: "/issues/list" },
   ];
   const pathName = usePathname();
+  const { status, data: session } = useSession();
   return (
     <nav className="flex space-x-6 items-center border-b h-14 mb-5 px-5">
-      <Link href="/" >
-        <AiOutlineIssuesClose className="text-3xl"/>
+      <Link href="/">
+        <AiOutlineIssuesClose className="text-3xl" />
       </Link>
       <ul className="flex space-x-6 h-full ">
         {links.map((link) => (
@@ -22,14 +24,14 @@ const Navbar = () => {
             className={classNames({
               "bg-zinc-900": pathName === link.href,
               "bg-none": pathName !== link.href,
-              "h-full flex items-center rounded-sm p-1":true
+              "h-full flex items-center rounded-sm p-1": true,
             })}
           >
             <Link
               className={classNames({
-                "text-zinc-500 hover:text-zinc-800": pathName!==link.href,
-                "text-zinc-400 hover:text-white": pathName===link.href,
-                "transition-colors":true
+                "text-zinc-500 hover:text-zinc-800": pathName !== link.href,
+                "text-zinc-400 hover:text-white": pathName === link.href,
+                "transition-colors": true,
               })}
               href={link.href}
             >
@@ -38,6 +40,27 @@ const Navbar = () => {
           </li>
         ))}
       </ul>
+      <div
+        className={classNames({
+          "bg-zinc-900": pathName === "/api/auth/signout",
+          "bg-none": pathName !== "/api/auth/signout",
+          "h-full flex items-center rounded-sm p-1": true,
+        })}
+      >
+        <Link
+          href={`/api/auth/${
+            status === "authenticated" ? "signout" : "signin"
+          }`}
+          className={classNames({
+            "text-zinc-500 hover:text-zinc-800":
+              pathName !== "/api/auth/signout",
+            "text-zinc-400 hover:text-white": pathName === "/api/auth/signout",
+            "transition-colors": true,
+          })}
+        >
+          {status === "authenticated" ? "Log Out" : "Log In"}
+        </Link>
+      </div>
     </nav>
   );
 };
