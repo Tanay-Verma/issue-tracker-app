@@ -2,3 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  .nav-link-not-selected {
+    @apply text-zinc-500 hover:text-zinc-800 transition-colors;
+  }
+
+  .nav-link-selected {
+    @apply text-zinc-400 hover:text-white transition-colors;
+  }
+}
