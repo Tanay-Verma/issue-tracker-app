@@ -5,6 +5,7 @@ import { IssuesSchema } from "../../IssuesSchema";
 export const POST = async (request: NextRequest) => {
   const body = await request.json();
   const validation = IssuesSchema.safeParse(body);
+  
   if (!validation.success)
     return NextResponse.json(validation.error.errors, { status: 400 });
   const newIssue = await prisma.issue.create({
