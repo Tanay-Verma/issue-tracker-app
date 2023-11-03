@@ -1,9 +1,10 @@
-import { Link, IssueStatusBadge } from "@/components";
+import { IssueStatusBadge, Link } from "@/components";
 import prisma from "@/prisma/client";
-import { Table } from "@radix-ui/themes";
-import NewIssueButton from "./NewIssueButton";
 import { Issue, Status } from "@prisma/client";
+import { Table } from "@radix-ui/themes";
 import NextLink from "next/link";
+import { BiSolidUpArrowAlt } from "react-icons/bi";
+import NewIssueButton from "./NewIssueButton";
 
 interface Props {
   searchParams: { status: Status; orderBy: keyof Issue };
@@ -52,7 +53,8 @@ const IssuesPage = async ({ searchParams }: Props) => {
                   href={{ query: { ...searchParams, orderBy: column.value } }}
                 >
                   {column.label}
-                </NextLink>{" "}
+                </NextLink>
+                {column.value === searchParams.orderBy && <BiSolidUpArrowAlt className="inline text-xl" />}
               </Table.ColumnHeaderCell>
             ))}
           </Table.Row>
