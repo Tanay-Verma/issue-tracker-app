@@ -5,9 +5,10 @@ import { Table } from "@radix-ui/themes";
 import NextLink from "next/link";
 import { BiSolidUpArrowAlt } from "react-icons/bi";
 import NewIssueButton from "./NewIssueButton";
+import Pagination from "@/components/Pagination";
 
 interface Props {
-  searchParams: { status: Status; orderBy: keyof Issue };
+  searchParams: { status: Status; orderBy: keyof Issue; page: string };
 }
 const statuses = Object.values(Status);
 
@@ -29,13 +30,24 @@ const IssuesPage = async ({ searchParams }: Props) => {
   const status = statuses.includes(searchParams.status)
     ? searchParams.status
     : undefined;
-
-  const orderBy = columns.map(column => column.value).includes(searchParams.orderBy)
+  const where = { status };
+  const orderBy = columns
+    .map((column) => column.value)
+    .includes(searchParams.orderBy)
     ? { [searchParams.orderBy]: "asc" }
     : undefined;
+
+  const page = parseInt(searchParams.page) || 1;
+  const pageSize = 10;
   const issues = await prisma.issue.findMany({
-    where: { status },
+    where,
     orderBy,
+    skip: (page - 1) * pageSize,
+    take: pageSize,
+  });
+
+  const count = await prisma.issue.count({
+    where,
   });
 
   return (
@@ -54,7 +66,9 @@ const IssuesPage = async ({ searchParams }: Props) => {
                 >
                   {column.label}
                 </NextLink>
-                {column.value === searchParams.orderBy && <BiSolidUpArrowAlt className="inline text-xl" />}
+                {column.value === searchParams.orderBy && (
+                  <BiSolidUpArrowAlt className="inline text-xl" />
+                )}
               </Table.ColumnHeaderCell>
             ))}
           </Table.Row>
@@ -81,6 +95,7 @@ const IssuesPage = async ({ searchParams }: Props) => {
           ))}
         </Table.Body>
       </Table.Root>
+      <Pagination currentPage={page} itemCount={count} pageSize={pageSize} />
     </>
   );
 };

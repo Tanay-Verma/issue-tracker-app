@@ -19,7 +19,7 @@ const Pagination = ({ currentPage, itemCount, pageSize }: Props) => {
   const searchParams = useSearchParams();
 
   const pageCount = Math.ceil(itemCount / pageSize);
-  if (itemCount === pageSize) return null;
+  if (itemCount <= pageSize) return null;
 
   const changePage = (pageNumber: number) => {
     const params = new URLSearchParams(searchParams);
