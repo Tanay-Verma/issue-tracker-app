@@ -8,7 +8,7 @@ interface Props {
   closed: number;
 }
 
-const IssueRename = ({ closed, inProgress, open }: Props) => {
+const IssueSummary = ({ closed, inProgress, open }: Props) => {
   const containers: { label: string; status: Status; value: number }[] = [
     { label: "Open Issues", status: "OPEN", value: open },
     { label: "Closed Issues", status: "CLOSED", value: closed },
@@ -30,4 +30,4 @@ const IssueRename = ({ closed, inProgress, open }: Props) => {
   );
 };
 
-export default IssueRename;
+export default IssueSummary;
