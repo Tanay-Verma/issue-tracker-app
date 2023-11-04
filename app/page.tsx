@@ -1,8 +1,9 @@
 import Pagination from '@/components/Pagination'
 import { Button } from '@radix-ui/themes'
+import LatestIssues from './LatestIssues'
 
-export default function Home({searchParams}:{searchParams:{page:string}}) {
+export default function Home() {
   return (
-   <Pagination currentPage={parseInt(searchParams.page)} itemCount={10} pageSize={1}/>
+   <LatestIssues/>
   )
 }
