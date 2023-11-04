@@ -3,6 +3,7 @@ import prisma from "@/prisma/client";
 import { Status } from "@prisma/client";
 import IssueActions from "./IssueActions";
 import IssueTable, { IssueQuery, columnsName } from "./IssueTable";
+import { Metadata } from "next";
 
 interface Props {
   searchParams: IssueQuery;
@@ -40,7 +41,11 @@ const IssuesPage = async ({ searchParams }: Props) => {
     <div className="flex flex-col gap-3">
       <IssueActions />
       <IssueTable searchParams={searchParams} issues={issues} />
-      <Pagination currentPage={page} itemCount={issueCount} pageSize={pageSize} />
+      <Pagination
+        currentPage={page}
+        itemCount={issueCount}
+        pageSize={pageSize}
+      />
     </div>
   );
 };
@@ -48,3 +53,8 @@ const IssuesPage = async ({ searchParams }: Props) => {
 export const dynamic = "force-dynamic";
 
 export default IssuesPage;
+
+export const metadata: Metadata = {
+  title: "Issue Tracker | Issue List",
+  description: "View all project issues",
+};
