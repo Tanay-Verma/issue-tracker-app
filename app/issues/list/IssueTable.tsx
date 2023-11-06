@@ -3,12 +3,14 @@ import Link from "@/components/Link";
 import { Issue, Status } from "@prisma/client";
 import { Table } from "@radix-ui/themes";
 import NextLink from "next/link";
-import { BiSolidUpArrowAlt } from "react-icons/bi";
+import { GoSortAsc, GoSortDesc } from "react-icons/go";
 
 export interface IssueQuery {
   status: Status;
   orderBy: keyof Issue;
+  order: "asc" | "desc";
   page: string;
+  
 }
 
 interface Props {
@@ -27,13 +29,13 @@ const IssueTable = ({issues,searchParams}:Props) => {
               className={column.className}
             >
               <NextLink
-                href={{ query: { ...searchParams, orderBy: column.value } }}
+                href={{ query: { ...searchParams, orderBy: column.value, order: (searchParams.order === "asc" && searchParams.orderBy === column.value) ? "desc":"asc" } }}
               >
                 {column.label}
               </NextLink>
-              {column.value === searchParams.orderBy && (
-                <BiSolidUpArrowAlt className="inline text-xl" />
-              )}
+              { 
+                column.value === searchParams.orderBy ? searchParams.order === "asc" ? <GoSortAsc className="inline text-xl ml-1"/> : <GoSortDesc className="inline text-xl ml-1" />:<></>
+              }
             </Table.ColumnHeaderCell>
           ))}
         </Table.Row>

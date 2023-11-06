@@ -19,7 +19,7 @@ const IssuesPage = async ({ searchParams }: Props) => {
 
   // setting the order in which issues need to be fetched
   const orderBy = columnsName.includes(searchParams.orderBy)
-    ? { [searchParams.orderBy]: "asc" }
+    ? { [searchParams.orderBy]: searchParams.order }
     : undefined;
 
   // prop values for Pagination component
