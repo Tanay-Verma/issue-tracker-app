@@ -1,4 +1,4 @@
-import Pagination from "@/components/Pagination";
+import Pagination, { AllowedPageSizes } from "@/components/Pagination";
 import prisma from "@/prisma/client";
 import { Status } from "@prisma/client";
 import IssueActions from "./IssueActions";
@@ -9,7 +9,7 @@ interface Props {
   searchParams: IssueQuery;
 }
 const statuses = Object.values(Status);
-
+const allowedPageSizes :AllowedPageSizes = ["5","10","15"]
 const IssuesPage = async ({ searchParams }: Props) => {
   // filtering out which issues to fetch
   const status = statuses.includes(searchParams.status)
@@ -24,7 +24,7 @@ const IssuesPage = async ({ searchParams }: Props) => {
 
   // prop values for Pagination component
   const page = parseInt(searchParams.page) || 1;
-  const pageSize = 10;
+  const pageSize = searchParams.pageSize ? allowedPageSizes.includes(searchParams.pageSize) ? parseInt(searchParams.pageSize):10:10;
   const issueCount = await prisma.issue.count({
     where,
   });

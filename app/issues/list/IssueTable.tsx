@@ -1,5 +1,6 @@
 import { IssueStatusBadge } from "@/components";
 import Link from "@/components/Link";
+import { PageSize } from "@/components/Pagination";
 import { Issue, Status } from "@prisma/client";
 import { Table } from "@radix-ui/themes";
 import NextLink from "next/link";
@@ -10,7 +11,7 @@ export interface IssueQuery {
   orderBy: keyof Issue;
   order: "asc" | "desc";
   page: string;
-  
+  pageSize:PageSize
 }
 
 interface Props {

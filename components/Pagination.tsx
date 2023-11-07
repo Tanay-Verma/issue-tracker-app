@@ -1,5 +1,5 @@
 "use client";
-import { Button, Text } from "@radix-ui/themes";
+import { Button, Select, Text } from "@radix-ui/themes";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
   MdKeyboardArrowLeft,
@@ -13,6 +13,11 @@ interface Props {
   itemCount: number;
   pageSize: number;
 }
+
+const allowedPageSizes = ["5","10","15"] as const
+export type AllowedPageSizes = typeof allowedPageSizes
+export type PageSize = typeof allowedPageSizes[number];
+const pageSizeArr:{label:string, value:PageSize}[] = [{label:"Records per page 5", value:"5"},{label:"Records per page 10", value:"10"},{label:"Records per page 15", value:"15"}]
 
 const Pagination = ({ currentPage, itemCount, pageSize }: Props) => {
   const router = useRouter();
@@ -63,6 +68,24 @@ const Pagination = ({ currentPage, itemCount, pageSize }: Props) => {
       >
         <MdKeyboardDoubleArrowRight className="text-xl" />
       </Button>
+      <Select.Root defaultValue={pageSize.toString()} onValueChange={(pageSize) => {
+        const params = new URLSearchParams();
+        if(searchParams.get("status")) params.append("status",searchParams.get("status")!)
+        if(searchParams.get("orderBy")) params.append("orderBy",searchParams.get("orderBy")!)
+        if(searchParams.get("order")) params.append("order",searchParams.get("order")!)
+        params.append("pageSize",pageSize)
+
+        const query = params.size ? `?${params.toString()}` : "";
+        router.push(`/issues/list${query}`)
+      }}>
+        <Select.Trigger/>
+        <Select.Content>
+          <Select.Group>
+            <Select.Label>Page Size</Select.Label>
+            {pageSizeArr.map(item => <Select.Item key={item.value} value={item.value}>{item.label}</Select.Item>)}
+          </Select.Group>
+        </Select.Content>
+      </Select.Root>
     </div>
   );
 };
