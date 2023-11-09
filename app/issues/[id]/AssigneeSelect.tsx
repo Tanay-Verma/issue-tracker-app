@@ -3,11 +3,13 @@ import Skeleton from "@/components/Skeleton";
 import { Issue, User } from "@prisma/client";
 import { Select, SelectGroup } from "@radix-ui/themes";
 import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "redaxios";
 
 const AssigneeSelect = ({ issue }: { issue: Issue }) => {
   const { data: users, error, isLoading } = useUsers();
+  const router = useRouter()
 
   if (isLoading) return <Skeleton height="2rem" />;
 
@@ -17,6 +19,7 @@ const AssigneeSelect = ({ issue }: { issue: Issue }) => {
     try {
       await axios.patch(`/api/issues/${issue.id}`, {
         assignedToUserId: userId !== "null" ? userId : null,
+        ...(userId !=="null") && {status:"IN_PROGRESS"}
       });
       toast.success(
         `${
@@ -25,6 +28,7 @@ const AssigneeSelect = ({ issue }: { issue: Issue }) => {
             : "Assigned successfully"
         }`
       );
+      router.refresh()
     } catch (error) {
       toast.error("Changes could not be saved");
     }
