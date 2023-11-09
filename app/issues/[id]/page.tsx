@@ -7,6 +7,7 @@ import DeleteButton from "./DeleteButton";
 import EditButton from "./EditButton";
 import IssueDetails from "./IssueDetails";
 import { cache } from "react";
+import StatusSelect from "./StatusSelect";
 
 const fetchIssue = cache((issueId: number) =>
   prisma.issue.findUnique({ where: { id: issueId } })
@@ -18,7 +19,9 @@ interface Props {
 
 const IssueDetailsPage = async ({ params }: Props) => {
   const session = await getServerSession(authOptions);
-  const issue = await fetchIssue(parseInt(params.id));
+  // const issue = await fetchIssue(parseInt(params.id));
+  const issue = await prisma.issue.findUnique({ where: { id: parseInt(params.id) } })
+  
   if (!issue) notFound();
   return (
     <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
@@ -28,6 +31,7 @@ const IssueDetailsPage = async ({ params }: Props) => {
       {session && (
         <div className="flex flex-col gap-4">
           <AssigneeSelect issue={issue} />
+          <StatusSelect status={issue.status} issueId={issue.id}/>
           <EditButton issueId={params.id} />
           <DeleteButton issueId={params.id} />
         </div>
