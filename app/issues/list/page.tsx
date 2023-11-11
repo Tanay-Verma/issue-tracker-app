@@ -15,7 +15,11 @@ const IssuesPage = async ({ searchParams }: Props) => {
   const status = statuses.includes(searchParams.status)
     ? searchParams.status
     : undefined;
-  const where = { status };
+
+  const assignedToUserId = searchParams.assignee !== "unassigned" ? searchParams.assignee : null
+  const where = { status, 
+    ...(searchParams.assignee) && {assignedToUserId:assignedToUserId}
+   };
 
   // setting the order in which issues need to be fetched
   const orderBy = columnsName.includes(searchParams.orderBy)
