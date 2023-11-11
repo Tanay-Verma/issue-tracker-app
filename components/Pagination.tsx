@@ -77,13 +77,9 @@ const Pagination = ({ currentPage, itemCount, pageSize }: Props) => {
       <Select.Root
         defaultValue={pageSize.toString()}
         onValueChange={(pageSize) => {
-          const params = new URLSearchParams();
-          if (searchParams.get("status"))
-            params.append("status", searchParams.get("status")!);
-          if (searchParams.get("orderBy"))
-            params.append("orderBy", searchParams.get("orderBy")!);
-          if (searchParams.get("order"))
-            params.append("order", searchParams.get("order")!);
+          const params = new URLSearchParams(Array.from(searchParams.entries()));
+          params.delete("page");
+          if(params.has("pageSize")) params.delete("pageSize")
           params.append("pageSize", pageSize);
 
           const query = params.size ? `?${params.toString()}` : "";

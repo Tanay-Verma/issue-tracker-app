@@ -15,14 +15,12 @@ const FilterIssueStatus = () => {
 
   return (
     <Select.Root
-      defaultValue={searchParams.get("status") ?? 'ALL'}
+      defaultValue={searchParams.get("status") ?? undefined}
       onValueChange={(status) => {
-
-        const params = new URLSearchParams();
+        const params = new URLSearchParams(Array.from(searchParams.entries()));
+        params.delete("page");
+        if(params.has("status")) params.delete("status")
         if(status !== 'ALL') params.append("status",status);
-        if(searchParams.get("orderBy")) params.append("orderBy",searchParams.get("orderBy")!)
-        if(searchParams.get("order")) params.append("order",searchParams.get("order")!)
-        if(searchParams.get("pageSize")) params.append("pageSize", searchParams.get("pageSize")!)
         const query = params.size ? `?${params.toString()}` : "";
         router.push(`/issues/list${query}`);
       }}
