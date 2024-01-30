@@ -25,7 +25,7 @@ const DeleteButton = ({ issueId }: { issueId: string }) => {
     <>
       <AlertDialog.Root>
         <AlertDialog.Trigger>
-          <Button color="red" disabled={isDeleting}>
+          <Button color="red" disabled={isDeleting} className="bg-red-600">
             <AiFillDelete />
             <Text as="span" className="cursor-pointer">
               Delete Issue
